@@ -26,7 +26,7 @@ function runTracker() {
     ]).then((answer) => {
         switch(answer.userChoice) {
             case "Add a department, role or employee":
-                queryArtist();
+                addEntry();
                 break;
             case "View current listings":
                 queryMultiFilter();
@@ -39,20 +39,46 @@ function runTracker() {
     );
 }
 
-function queryArtist() {
+function addEntry() {
     inquirer.prompt({
-        type: 'input',
-        name: 'artist',
-        message: 'What artist would you like to search for?'
-    })
-    .then(function (answer) {
-        const query = "SELECT artist, position, song, year FROM top5000 WHERE artist = ?";
-        connection.query(query, answer.artist, (err, results) => {
-            if (err) throw err;
-            console.log(results);
-            runTracker();
-        });
-    })
+        type: 'list',
+        name: 'addentry',
+        message: 'What area would you like to add an entry to?',
+        choices: ['Departments','Employees','Managers']
+    }).then((answer) => {
+        switch(answer.userChoice) {
+            case "Departments":
+                inquirer.prompt({
+                    type: 'input',
+                    name: 'departmentchoice',
+                    message: 'What is the name of the department you would like to create?'
+                })
+                let query = `INSERT INTO departments (name) VALUES (${})`;
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    console.log(results);
+                    runTracker();
+                });
+                break;
+            case "Employees":
+                let query = "SELECT * FROM employees";
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    console.log(results);
+                    runTracker();
+                });
+                break;
+            case "Managers":
+                let query = "SELECT * FROM managers";
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    console.log(results);
+                    runTracker();
+                });
+                break;
+        }
+       } 
+    );
 }
 
 function queryMultiFilter() {
@@ -66,7 +92,7 @@ function queryMultiFilter() {
     ]).then((answer) => {
         switch(answer.userChoice) {
             case "Departments":
-                const query = "SELECT * FROM departments";
+                let query = "SELECT * FROM departments";
                 connection.query(query, (err, results) => {
                     if (err) throw err;
                     console.log(results);
@@ -74,7 +100,7 @@ function queryMultiFilter() {
                 });
                 break;
             case "Employees":
-                const query = "SELECT * FROM employees";
+                let query = "SELECT * FROM employees";
                 connection.query(query, (err, results) => {
                     if (err) throw err;
                     console.log(results);
@@ -82,7 +108,7 @@ function queryMultiFilter() {
                 });
                 break;
             case "Managers":
-                const query = "SELECT * FROM managers";
+                let query = "SELECT * FROM managers";
                 connection.query(query, (err, results) => {
                     if (err) throw err;
                     console.log(results);
@@ -92,13 +118,7 @@ function queryMultiFilter() {
         }
        } 
     );
-    
-        connection.query(query, (err, results) => {
-            if (err) throw err;
-            console.log(results);
-            runSearch();
-        });
-    }
+}
 
 function queryRange() {
     inquirer.prompt([
@@ -124,23 +144,6 @@ function queryRange() {
             console.log(results);
             runSearch();
         });
-    })
-}
-
-function querySongSpecific() {
-    inquirer.prompt({
-        type: 'input',
-        name: 'song',
-        message: 'What song would you like to search for?'
-    })
-    .then(function (answer) {
-        const query = "SELECT artist, position, song, year FROM top5000 WHERE ?";
-        const ret = connection.query(query, {song: answer.song}, (err, results) => {
-            if (err) throw err;
-            console.log(results);
-            runSearch();
-        });
-        console.log(ret.sql);
     })
 }
 
