@@ -12,30 +12,27 @@ const connection = mysql.createConnection({
     database: 'top_songsDB',
 });
 
-function runSearch() {
+function runTracker() {
     inquirer.prompt([
         {
             type: 'list',
             name: 'userChoice',
-            message: 'What would you like to search?',
-            choices: ["Find songs by artist",
-             "Find all artists who appear more than once",
-             "Find songs within a specific position range",
-             "Search for a specific song"]
+            message: 'What would you like to do?',
+            choices: ["Add a department, role or employee",
+             "View current listings",
+             "Update an employee's role"
+            ]
         }
     ]).then((answer) => {
         switch(answer.userChoice) {
-            case "Find songs by artist":
+            case "Add a department, role or employee":
                 queryArtist();
                 break;
-            case "Find all artists who appear more than once":
+            case "View current listings":
                 queryMultiFilter();
                 break;
-            case "Find songs within a specific position range":
+            case "Update an employee's role":
                 queryRange();
-                break;
-            case "Search for a specific song":
-                querySongSpecific();
                 break;
         }
        } 
@@ -53,7 +50,7 @@ function queryArtist() {
         connection.query(query, answer.artist, (err, results) => {
             if (err) throw err;
             console.log(results);
-            runSearch();
+            runTracker();
         });
     })
 }
