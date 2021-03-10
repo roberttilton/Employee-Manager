@@ -10,8 +10,8 @@ CREATE TABLE department (
 
 CREATE TABLE role (
     title VARCHAR(30),
-    salary INT NOT NULL UNSIGNED
-    department_id INT NOT NULL UNSIGNED,
+    salary INT UNSIGNED NOT NULL
+    department_id INT UNSIGNED NOT NULL,
     INDEX dep_id (department_id),
 )
 
