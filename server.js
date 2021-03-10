@@ -29,7 +29,7 @@ function runTracker() {
                 addEntry();
                 break;
             case "View current listings":
-                queryMultiFilter();
+                viewAll();
                 break;
             case "Update an employee's role":
                 queryRange();
@@ -52,22 +52,34 @@ function addEntry() {
                     type: 'input',
                     name: 'departmentchoice',
                     message: 'What is the name of the department you would like to create?'
-                })
-                let query = `INSERT INTO departments (name) VALUES (${})`;
-                connection.query(query, (err, results) => {
+                }).then((answer) => {
+                let query = "INSERT INTO departments (name) VALUES (?)";
+                connection.query(query, answer.departmentchoice, (err, results) => {
                     if (err) throw err;
                     console.log(results);
                     runTracker();
                 });
                 break;
+            })
             case "Employees":
-                let query = "SELECT * FROM employees";
-                connection.query(query, (err, results) => {
+                inquirer.prompt({
+                    type: 'input',
+                    name: 'firstname',
+                    message: 'What is the first name of the employee you would like to create?'
+                },
+                {
+                    type: 'input',
+                    name: 'lastname',
+                    message: 'What is the last name of the employee you would like to create?'
+                }).then((answer) => {
+                let query = "INSERT INTO employee (first_name, last_name) VALUES (?)";
+                connection.query(query, [answer.firstname, answer.lastname], (err, results) => {
                     if (err) throw err;
                     console.log(results);
                     runTracker();
                 });
                 break;
+            })
             case "Managers":
                 let query = "SELECT * FROM managers";
                 connection.query(query, (err, results) => {
@@ -81,7 +93,7 @@ function addEntry() {
     );
 }
 
-function queryMultiFilter() {
+function viewAll() {
     inquirer.prompt([
         {
             type: 'list',
