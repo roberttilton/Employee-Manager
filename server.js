@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
     user: 'root',
 
     password: 'awesomexb0x',
-    database: 'top_songsDB',
+    database: 'employeeDB',
 });
 
 function runTracker() {
@@ -20,7 +20,7 @@ function runTracker() {
             message: 'What would you like to do?',
             choices: ["Add a department, role or employee",
              "View current listings",
-             "Update an employee's role"
+             "Update an employee's role",
             ]
         }
     ]).then((answer) => {
@@ -56,7 +56,43 @@ function queryArtist() {
 }
 
 function queryMultiFilter() {
-        const query = "SELECT artist, COUNT(*) FROM top5000 GROUP BY artist HAVING COUNT(*) > 10";
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'viewselection',
+            message: 'Which category would you like to view all results in?',
+            choices: ['Departments', 'Employees', 'Managers']
+        }
+    ]).then((answer) => {
+        switch(answer.userChoice) {
+            case "Departments":
+                const query = "SELECT * FROM departments";
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    console.log(results);
+                    runTracker();
+                });
+                break;
+            case "Employees":
+                const query = "SELECT * FROM employees";
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    console.log(results);
+                    runTracker();
+                });
+                break;
+            case "Managers":
+                const query = "SELECT * FROM managers";
+                connection.query(query, (err, results) => {
+                    if (err) throw err;
+                    console.log(results);
+                    runTracker();
+                });
+                break;
+        }
+       } 
+    );
+    
         connection.query(query, (err, results) => {
             if (err) throw err;
             console.log(results);
