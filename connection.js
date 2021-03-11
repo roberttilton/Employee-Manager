@@ -29,10 +29,10 @@ const connection = mysql.createConnection({
                 addEntry();
                 break;
             case "View current listings":
-                queryMultiFilter();
+                viewEmployees();
                 break;
             case "Update an employee's role":
-                queryRange();
+                updateRole();
                 break;
         }
        } 
@@ -52,21 +52,33 @@ function addEntry() {
                     type: 'input',
                     name: 'departmentchoice',
                     message: 'What is the name of the department you would like to create?'
-                })
-                let query = `INSERT INTO departments (name) VALUES ()`;
-                connection.query(query, (err, results) => {
+                }).then((answer) => {
+                let query = "INSERT INTO departments (name) VALUES (?)";
+                connection.query(query, answer.departmentchoice, (err, results) => {
                     if (err) throw err;
                     console.log(results);
                     runTracker();
                 });
+            })
                 break;
             case "Employees":
-                let query = "SELECT * FROM employees";
-                connection.query(query, (err, results) => {
+                inquirer.prompt({
+                    type: 'input',
+                    name: 'firstname',
+                    message: 'What is the first name of the employee you would like to create?'
+                },
+                {
+                    type: 'input',
+                    name: 'lastname',
+                    message: 'What is the last name of the employee you would like to create?'
+                }).then((answer) => {
+                let query = "INSERT INTO employee (first_name, last_name) VALUES (?)";
+                connection.query(query, [answer.firstname, answer.lastname], (err, results) => {
                     if (err) throw err;
                     console.log(results);
                     runTracker();
                 });
+            })
                 break;
             case "Managers":
                 let query = "SELECT * FROM managers";
@@ -81,7 +93,7 @@ function addEntry() {
     );
 }
 
-function queryMultiFilter() {
+function viewEmployees() {
     inquirer.prompt([
         {
             type: 'list',
@@ -120,26 +132,16 @@ function queryMultiFilter() {
     );
 }
 
-function queryRange() {
+function updateRole() {
     inquirer.prompt([
     {
         type: 'input',
-        name: 'start',
-        message: 'What is the starting position you would like to designate?'
-    },
-    {
-        type: 'input',
-        name: 'ending',
-        message: 'What is the ending position you would like to designate?',
-        validate: (val) => {
-            if(isNaN(val) === false) return true;
-             return false;
-        }
-    },
-    ])
-    .then(function (answer) {
-        const query = "SELECT position, song, artist, year FROM top5000 WHERE position between ? and ?";
-        connection.query(query, [answer.start, answer.ending], (err, results) => {
+        name: 'role',
+        message: 'What role would you like to assign an employee?'
+    }
+    ]).then(function (answer) {
+        const query = "INSERT INTO employee (role_id)";
+        connection.query(query, answer.role, (err, results) => {
             if (err) throw err;
             console.log(results);
             runSearch();

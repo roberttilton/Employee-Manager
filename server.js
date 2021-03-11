@@ -32,7 +32,7 @@ function runTracker() {
                 viewAll();
                 break;
             case "Update an employee's role":
-                queryRange();
+                updateRole();
                 break;
         }
        } 
@@ -59,8 +59,8 @@ function addEntry() {
                     console.log(results);
                     runTracker();
                 });
-                break;
             })
+                break;
             case "Employees":
                 inquirer.prompt({
                     type: 'input',
@@ -132,7 +132,7 @@ function viewAll() {
     );
 }
 
-function queryRange() {
+function updateRole() {
     inquirer.prompt([
     {
         type: 'input',

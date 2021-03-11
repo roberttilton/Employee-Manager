@@ -17,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/roberttilton/Employee-Manager/issues"
   },
-  "homepage": "https://github.com/roberttilton/Employee-Manager#readme"
+  "homepage": "https://github.com/roberttilton/Employee-Manager#readme",
+  "dependencies": {
+    "inquirer": "^8.0.0",
+    "mysql": "^2.18.1"
+  }
 }
