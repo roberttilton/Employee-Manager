@@ -200,16 +200,16 @@ function updateRole() {
         {
             type: 'input',
             name: 'employeepick',
-            message: 'What employee would you like to edit?' 
+            message: 'What employee ID would you like to select to edit?' 
         },
         {
             type: 'input',
             name: 'role',
-            message: 'What role would you like to assign this employee?'
+            message: 'What role ID would you like to assign this employee?'
         }
     ]).then(function (answer) {
-        let query = "INSERT INTO employee (role_id)";
-        connection.query(query, answer.role, (err, results) => {
+        let query = "UPDATE employee SET role_id = ? WHERE id = ?";
+        connection.query(query, [answer.role, answer.employeepick], (err, results) => {
             if (err) throw err;
             console.log(results);
             runSearch();
