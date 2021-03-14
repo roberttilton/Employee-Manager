@@ -78,8 +78,8 @@ function addEntry() {
                     console.log(results);
                     runTracker();
                 });
-                break;
             })
+                break;
             case "Managers":
                 let query = "SELECT * FROM managers";
                 connection.query(query, (err, results) => {
@@ -150,7 +150,7 @@ function updateRole() {
     },
     ])
     .then(function (answer) {
-        const query = "SELECT position, song, artist, year FROM top5000 WHERE position between ? and ?";
+        let query = "SELECT position, song, artist, year FROM top5000 WHERE position between ? and ?";
         connection.query(query, [answer.start, answer.ending], (err, results) => {
             if (err) throw err;
             console.log(results);

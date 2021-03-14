@@ -20,6 +20,7 @@
   "homepage": "https://github.com/roberttilton/Employee-Manager#readme",
   "dependencies": {
     "inquirer": "^8.0.0",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "util": "^0.12.3"
   }
 }

@@ -4,24 +4,24 @@ CREATE DATABASE employeeDB;
 USE employeeDB;
 
 CREATE TABLE department (
-    id INTEGER UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(30) UNIQUE NOT NULL
-)
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL
+);
 
 CREATE TABLE role (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30),
-    salary INT UNSIGNED NOT NULL
-    department_id INT UNSIGNED NOT NULL,
-    INDEX dep_id (department_id),
-)
+    salary INT NOT NULL,
+    department_id INT NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES department(id)
+);
 
 CREATE TABLE employee (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
-    INDEX role_id (role_id)
-
-    manager_id INT UNSIGNED
-    INDEX man_id (manager_id)
-)
+    FOREIGN KEY (role_id) REFERENCES role(id),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES employee(id)
+);
