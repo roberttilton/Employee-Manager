@@ -168,7 +168,7 @@ function viewEmployees() {
                 break;
             case "Employees":
                 let query1 = "SELECT * FROM employee";
-                connection.query1(query1, (err, results) => {
+                connection.query(query1, (err, results) => {
                     if (err) throw err;
                     console.log(results);
                     runTracker();
@@ -212,7 +212,7 @@ function updateRole() {
         connection.query(query, [answer.role, answer.employeepick], (err, results) => {
             if (err) throw err;
             console.log(results);
-            runSearch();
+            runTracker();
         });
     })
 }
